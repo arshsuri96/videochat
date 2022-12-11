@@ -1,18 +1,11 @@
-module github.com/arshsuri96/videochat-project
+module videochat
 
 go 1.19
 
 require github.com/gofiber/fiber/v2 v2.40.1
 
 require (
-	github.com/fasthttp/websocket v1.5.0 // indirect
-	github.com/savsgio/gotils v0.0.0-20211223103454-d0aaa54c5899 // indirect
-)
-
-require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
-	github.com/gofiber/websocket/v2 v2.1.2
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/klauspost/compress v1.15.9 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect

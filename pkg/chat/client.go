@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/fasthttp/websocket"
-	"github.com/gofiber/websocket"
 )
 
 const (

@@ -7,3 +7,10 @@ the concept of video chat revolves around rooms
 
 >>Check what is tracklocalstaticRTP
 
+16th December 
+
+Today we learned about websocket
+Websockets are the concept which we use to have an interactive session between the browser and the server. They user does not require to load the page again for the poll.
+there are two types of websocket. 
+>>>>> NETWORK SOCKETS >>>>> WEBSOCKETS
+

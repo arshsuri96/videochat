@@ -56,7 +56,40 @@ func (c *Client) readPump() {
 }
 
 func (c *Client) writePump() {
+	//chat has time stamps for that we create ticker
+	ticker := time.NewTicker(pingPeriod)
+	defer func() {
+		ticker.Stop()
+		c.Conn.Close()
+	}()
+	for {
+		select {
+		case message, ok := <-c.Send:
+			c.Conn.SetWriteDeadline(time.Now().Add(writeWait))
+			if !ok {
+				return
+			}
+			w, err := c.Conn.SetWriter(websocket.TextMessage)
+			if err != nil {
+				return
+			}
+			w.Write(message)
 
+			n := len(c.Send)
+			for i := 0; i < n; i++ {
+				w.Write(newline)
+				w.Write(<-c.Send)
+			}
+			if err := w.Close(); err != nil {
+				return
+			}
+		case <-ticker.C:
+			c.Conn.SetWriteDeadline(time.Now().Add(writeWait))
+			if err := c.Conn.WriteMessgae(websocket.PingMessage, nil); err != nil {
+				return
+			}
+		}
+	}
 }
 
 func PeerChatConn(c *websocket.Conn, h *Hub) {

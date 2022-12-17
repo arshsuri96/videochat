@@ -1,9 +1,4 @@
-package webrtc
 
-import (
-	"sync"
-	"videochat/pkg/chat"
-)
 
 //function going to have access to peers,
 //going to be method not just a function, called dispatch keep frame
@@ -15,7 +10,7 @@ type Room struct {
 
 type Peers struct {
 	ListLock    sync.RWMutex
-	Connections []PeerConnectionsState
+	Connections []PeerConnectionState
 	TrackLocals map[string]*webrtc.TrackLocalStaticRTP
 }
 

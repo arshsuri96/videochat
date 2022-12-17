@@ -46,7 +46,7 @@ func Run() error {
 	app.Get("/room/uuid/viewer/websocket", websocket.New(handlers.RoomViewerWebsocket))
 	app.Get("/stream/:ssuid", handlers.Stream)
 	app.Get("/stream/:ssuid/websocket", websocket.New(handlers.StreamWebsocket,
-		websocket.Config{HandshakeTimeout: 10 * time.Seconds}))
+		websocket.Config{HandshakeTimeout: 10 * time.Second}))
 	app.Get("/stream/ssuid/chat/websocket", websocket.New(handlers.StreamChatWebsocket))
 	app.Get("/stream/:ssuid/viewer/websocket", websocket.New(handlers.StreamViewerWebsocket))
 	app.Static("/", "./assets")

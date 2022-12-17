@@ -28,7 +28,7 @@ type Client struct {
 
 var upgrader = websocket.FastHTTPUpgrader{
 	ReadBufferSize:  1024,
-	RightBufferSize: 1024,
+	WriteBufferSize: 1024,
 }
 
 func (c *Client) readPump() {
@@ -50,7 +50,7 @@ func (c *Client) readPump() {
 			}
 			break
 		}
-		message = bytes.TrimSpace(bytes.Replace(message.newline, space, -1))
+		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
 		c.Hub.broadcast <- message
 	}
 }
@@ -69,7 +69,7 @@ func (c *Client) writePump() {
 			if !ok {
 				return
 			}
-			w, err := c.Conn.SetWriter(websocket.TextMessage)
+			w, err := c.Conn.NextWriter(websocket.TextMessage)
 			if err != nil {
 				return
 			}
@@ -85,7 +85,7 @@ func (c *Client) writePump() {
 			}
 		case <-ticker.C:
 			c.Conn.SetWriteDeadline(time.Now().Add(writeWait))
-			if err := c.Conn.WriteMessgae(websocket.PingMessage, nil); err != nil {
+			if err := c.Conn.WriteMessage(websocket.PingMessage, nil); err != nil {
 				return
 			}
 		}

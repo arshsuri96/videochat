@@ -3,6 +3,8 @@ package webrtc
 import (
 	"log"
 	"sync"
+
+	"github.com/gofiber/websocket"
 )
 
 func RoomConn(c *websocket.Conn, p *Peers) {

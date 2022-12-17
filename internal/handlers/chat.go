@@ -31,11 +31,12 @@ func RoomChatWebsocket(c *websocket.Conn) {
 }
 
 func StreamChatWebsocket(c *websocket.Conn) {
-	suuid := c.Params("suuisd")
+	suuid := c.Params("suuid")
 	if suuid == "" {
 		return
 	}
 
+	// lock unlock comes under Mutex, these are exclusion plicies for resource management
 	w.RoomsLock.Lock()
 	if stream, ok := w.Streams[suuid]; ok {
 		w.RoomsLock.UnLock()

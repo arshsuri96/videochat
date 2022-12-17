@@ -10,7 +10,38 @@ the concept of video chat revolves around rooms
 16th December 
 
 Today we learned about websocket
-Websockets are the concept which we use to have an interactive session between the browser and the server. They user does not require to load the page again for the poll.
+Websockets are the concept which we use to have an interactive session between the browser and the server. The user does not require to load the page again for the poll.
 there are two types of websocket. 
 >>>>> NETWORK SOCKETS >>>>> WEBSOCKETS
+here we have used gorilla websocket, more like fasthttp
 
+
+17th december 
+
+in room.go file, we have used lock()
+A lock, or mutex, is a synchronization technique and important concurrent programming concept.
+Suppose you are writing a Go program where there is more than one thread or goroutine executing concurrently. 
+These goroutines share a variable among them – so you’ll want to ensure that only one goroutine accesses the variable at a time to avoid conflicts. This is where mutexes come in.
+
+EXAMPLE
+we use HandleConnect again and again in our application
+var mutex sync.Mutex
+
+func main() {
+     handle()
+    go register()
+}
+
+func register(){
+   myObject.OnEvent().DoFunc(HandleConnect)
+}
+func HandleConnect(){
+    handle()
+}
+func handle() bool {
+
+    mutex.Lock()
+    defer mutex.Unlock()
+    ....some logic.... do login...
+    return true
+}

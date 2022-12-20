@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"os"
+	"videochat/pkg/chat"
 	w "videochat/pkg/webrtc"
 
 	"github.com/gofiber/fiber/v2"
@@ -46,7 +47,31 @@ func RoomWebsocket(c *websocket.Conn) {
 	w.RoomConn(c, room.Peers)
 }
 
+// for streaming we will use secure uuid, so we will hash it
 func createOrGetRoom(uuid string) (string, string, *w.Room) {
+	w.RoomsLock.Lock()
+	defer w.RoomsLock.Unlock()
+	h := sha256.new()
+	h.write([]byte(uuid))
+	suuid := fmt.Sprint("%x", h.Sum(nil))
+
+	if room := w.Rooms[uuid]; room != nil {
+		if _, ok := Stream[suuid]; !ok {
+			w.Streams = room
+		}
+		return uuid, suuid, room
+	}
+	hub := chat.NewHub()
+	p := &w.Peers{}
+	p.TrackLocals = make(map[string]*webrtc.TrackLocalStaticRTP)
+	room := &w.Room{
+		Peers: p,
+		Hub:   h,
+	}
+	w.Rooms[uuid] = room
+	w.Streams[suuid] = room
+	go hub.Run()
+	return uuid, suuid, room
 
 }
 
